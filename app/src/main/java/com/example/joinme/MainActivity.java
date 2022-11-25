@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         //init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
+        checkUser();
 
         //google SignInButton: Click to begin Google SignIn
         binding.googleSignIntn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, RC_SIGN_IN);
             }
         });
+    }
+
+    private void checkUser() {
+        //if user is already signed in then go to main page
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            Log.d(TAG, "checkUser: Already logged in");
+            startActivity(new Intent(this, MainPageActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -124,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         //start profile activity
+                        startActivity(new Intent(MainActivity.this, MainPageActivity.class));
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
